@@ -1,0 +1,53 @@
+<div class="page-shell">
+  <div class="form-card">
+    <div class="heading">
+      <span class="eyebrow">New request</span>
+      <h2>Create support ticket</h2>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="ticket-form">
+      <label>
+        <span>Title</span>
+        <input type="text" formControlName="title" placeholder="Brief summary of issue" />
+      </label>
+
+      <label>
+        <span>Description</span>
+        <textarea rows="5" formControlName="description" placeholder="Describe the problem in detail"></textarea>
+      </label>
+
+      <div class="split-grid">
+        <label>
+          <span>Category</span>
+          <select formControlName="category">
+            <option value="HARDWARE">Hardware</option>
+            <option value="SOFTWARE">Software</option>
+            <option value="NETWORK">Network</option>
+            <option value="EMAIL">Email</option>
+            <option value="ACCESS">Access</option>
+            <option value="PRINTER">Printer</option>
+            <option value="SECURITY">Security</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Priority</span>
+          <select formControlName="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+            <option value="CRITICAL">Critical</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="secondary" [routerLink]="['/employee']">Cancel</button>
+        <button type="submit" [disabled]="submitting">{{ submitting ? 'Submitting...' : 'Submit ticket' }}</button>
+      </div>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

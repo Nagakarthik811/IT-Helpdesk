@@ -1,0 +1,51 @@
+<div class="page-shell">
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Employee portal</span>
+      <h2>Welcome, {{ user?.firstName || 'Employee' }}</h2>
+    </div>
+    <nav class="nav-actions">
+      <a routerLink="/tickets/new">Create ticket</a>
+      <button type="button" (click)="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Open Requests</span>
+      <strong>{{ tickets.length }}</strong>
+    </div>
+    <div class="summary-card">
+      <span>Recent Updates</span>
+      <strong>{{ recentTickets.length }}</strong>
+    </div>
+    <div class="summary-card">
+      <span>Support Status</span>
+      <strong>Active</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h3>My tickets</h3>
+      <a routerLink="/tickets/new">+ New request</a>
+    </div>
+
+    <div class="ticket-list" *ngIf="tickets.length; else emptyState">
+      <article class="ticket-item" *ngFor="let ticket of tickets">
+        <div>
+          <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+          <h4>{{ ticket.title }}</h4>
+        </div>
+        <div class="meta-row">
+          <span>#{{ ticket.ticketNumber || ticket.id }}</span>
+          <span>{{ ticket.status }}</span>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">No tickets found for your account yet.</div>
+    </ng-template>
+  </section>
+</div>

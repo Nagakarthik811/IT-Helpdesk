@@ -1,0 +1,27 @@
+<div class="login-shell">
+  <div class="login-card">
+    <div class="brand-block">
+      <span class="eyebrow">IT Helpdesk</span>
+      <h1>Welcome back</h1>
+      <p>Access your service requests, workflows, and support queue.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <label>
+        <span>Username</span>
+        <input type="text" formControlName="username" placeholder="Enter username" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" placeholder="Enter password" />
+      </label>
+
+      <button type="submit" [disabled]="form.invalid || submitting">
+        {{ submitting ? 'Signing in...' : 'Login' }}
+      </button>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

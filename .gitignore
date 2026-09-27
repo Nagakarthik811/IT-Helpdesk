@@ -1,0 +1,7 @@
+IT_Helpdesk/
+node_modules/
+dist/
+target/
+.idea/
+.vscode/
+*.log

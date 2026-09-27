@@ -1,0 +1,56 @@
+<div class="page-shell">
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">Admin control</span>
+      <h2>Service overview</h2>
+    </div>
+    <button type="button" (click)="logout()">Logout</button>
+  </header>
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Total tickets</span>
+      <strong>{{ totalTickets.length }}</strong>
+    </div>
+    <div class="summary-card">
+      <span>Open issues</span>
+      <strong>{{ openTicketsCount() }}</strong>
+    </div>
+    <div class="summary-card">
+      <span>Recent activity</span>
+      <strong>{{ recentTickets.length }}</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Latest tickets</h3>
+    <div class="ticket-list" *ngIf="recentTickets.length; else emptyState">
+      <article class="ticket-item" *ngFor="let ticket of recentTicketPreview()">
+        <div class="ticket-copy">
+          <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+          <h4>{{ ticket.title }}</h4>
+          <p>{{ ticket.description }}</p>
+        </div>
+        <div class="ticket-side">
+          <div class="meta-row">
+            <span>#{{ ticket.ticketNumber || ticket.id }}</span>
+            <span>{{ ticket.status }}</span>
+          </div>
+          <div class="action-row compact">
+            <select [(ngModel)]="assignmentSelections[ticket.id]">
+              <option [ngValue]="undefined">Assign support</option>
+              <option *ngFor="let user of supportUsers" [ngValue]="user.id">{{ user.username }}</option>
+            </select>
+            <button type="button" class="primary" (click)="assignToSupport(ticket)">Assign</button>
+            <button type="button" class="secondary" (click)="updateTicketStatus(ticket, 'IN_PROGRESS')">In progress</button>
+            <button type="button" class="success" (click)="updateTicketStatus(ticket, 'RESOLVED')">Resolve</button>
+            <button type="button" class="danger" (click)="updateTicketStatus(ticket, 'CLOSED')">Close</button>
+          </div>
+        </div>
+      </article>
+    </div>
+    <ng-template #emptyState>
+      <div class="empty-state">No recent activity recorded.</div>
+    </ng-template>
+  </section>
+</div>

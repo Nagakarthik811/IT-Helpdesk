@@ -1,0 +1,107 @@
+.page-shell {
+  min-height: 100vh;
+  background: #f8fafc;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.form-card {
+  width: min(800px, 100%);
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+}
+
+.heading {
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  display: block;
+  color: #2563eb;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.4rem;
+}
+
+.heading h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.ticket-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.ticket-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.ticket-form input,
+.ticket-form textarea,
+.ticket-form select {
+  width: 100%;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.ticket-form textarea {
+  resize: vertical;
+}
+
+.split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+}
+
+button.secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.error {
+  color: #b91c1c;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .split-grid {
+    grid-template-columns: 1fr;
+  }
+}
