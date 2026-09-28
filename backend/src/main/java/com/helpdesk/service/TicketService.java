@@ -36,6 +36,25 @@ public class TicketService {
         return ticketRepository.findByCreatedBy(currentUser, pageable).map(this::toResponse);
     }
 
+    @Transactional
+    public void deleteTicket(Long ticketId) {
+        Ticket ticket = findTicketById(ticketId);
+        User currentUser = getCurrentUser();
+
+        if (ticket.getStatus() != TicketStatus.CLOSED) {
+            throw new BadRequestException("Only closed tickets can be deleted.");
+        }
+
+        boolean isOwner = ticket.getCreatedBy() != null && ticket.getCreatedBy().getId().equals(currentUser.getId());
+        boolean isAdmin = currentUser.getRole() == Role.ADMIN;
+
+        if (!isOwner && !isAdmin) {
+            throw new BadRequestException("You can only delete your own closed tickets or ask an admin to remove them.");
+        }
+
+        ticketRepository.delete(ticket);
+    }
+
     public Page<TicketResponse> getAllTickets(Pageable pageable) {
         return ticketRepository.findAll(pageable).map(this::toResponse);
     }
@@ -65,8 +84,16 @@ public class TicketService {
 
     public TicketResponse assignTicket(Long ticketId, Long supportUserId) {
         Ticket ticket = findTicketById(ticketId);
+        User currentUser = getCurrentUser();
         User supportUser = userRepository.findById(supportUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Support user not found"));
+
+        if (currentUser.getRole() == Role.IT_SUPPORT && !currentUser.getId().equals(supportUserId)) {
+            if (ticket.getAssignedTo() == null || !ticket.getAssignedTo().getId().equals(currentUser.getId())) {
+                throw new BadRequestException("Support agents can only claim unassigned tickets or manage their own assigned tickets.");
+            }
+        }
+
         if (ticket.getStatus() == TicketStatus.CLOSED) {
             throw new BadRequestException("Closed tickets cannot be reassigned");
         }
@@ -166,6 +193,28 @@ public class TicketService {
     public List<TicketResponse> getAssignedTicketsForCurrentUser() {
         User current = getCurrentUser();
         return ticketRepository.findByAssignedTo(current, Pageable.unpaged()).stream().map(this::toResponse).toList();
+    }
+
+    public List<TicketResponse> getVisibleTicketsForCurrentSupportUser() {
+        User current = getCurrentUser();
+        return ticketRepository.findAll().stream()
+                .filter(ticket -> ticket.getStatus() != TicketStatus.CLOSED)
+                .filter(ticket -> ticket.getAssignedTo() == null || ticket.getAssignedTo().getId().equals(current.getId()))
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public List<TicketResponse> getVisibleHighPriorityTicketsForCurrentSupportUser() {
+        return getVisibleTicketsForCurrentSupportUser().stream()
+                .filter(ticket -> ticket.getPriority() == TicketPriority.HIGH || ticket.getPriority() == TicketPriority.CRITICAL)
+                .toList();
+    }
+
+    public List<TicketResponse> getRecentTicketsForCurrentSupportUser() {
+        return getVisibleTicketsForCurrentSupportUser().stream()
+                .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+                .limit(10)
+                .toList();
     }
 
     public List<TicketResponse> getMyTickets() {

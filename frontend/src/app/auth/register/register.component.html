@@ -1,0 +1,70 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand-block">
+      <span class="eyebrow">Create account</span>
+      <h1>Join the IT helpdesk</h1>
+      <p>Register as an employee or support agent to manage service requests.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <div class="field-row two-up">
+        <label>
+          <span>First name</span>
+          <input type="text" formControlName="firstName" placeholder="First name" />
+        </label>
+        <label>
+          <span>Last name</span>
+          <input type="text" formControlName="lastName" placeholder="Last name" />
+        </label>
+      </div>
+
+      <div class="field-row two-up">
+        <label>
+          <span>Username</span>
+          <input type="text" formControlName="username" placeholder="Username" />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" formControlName="email" placeholder="you@company.com" />
+        </label>
+      </div>
+
+      <div class="field-row two-up">
+        <label>
+          <span>Password</span>
+          <input type="password" formControlName="password" placeholder="Password" />
+        </label>
+        <label>
+          <span>Employee ID</span>
+          <input type="text" formControlName="employeeId" placeholder="Optional" />
+        </label>
+      </div>
+
+      <div class="field-row two-up">
+        <label>
+          <span>Department</span>
+          <input type="text" formControlName="department" placeholder="Optional" />
+        </label>
+        <label>
+          <span>Role</span>
+          <select formControlName="role">
+            <option value="EMPLOYEE">Employee</option>
+            <option value="IT_SUPPORT">Support Agent</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid || submitting">
+        {{ submitting ? 'Creating account...' : 'Create account' }}
+      </button>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+      <div class="switch-link">
+        Already have an account?
+        <a routerLink="/login">Login</a>
+      </div>
+    </form>
+  </div>
+</div>

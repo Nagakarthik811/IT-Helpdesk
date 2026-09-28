@@ -35,6 +35,7 @@ export class AdminDashboardComponent implements OnInit {
       next: (data) => {
         this.totalTickets = data.totalTickets ?? [];
         this.recentTickets = data.recentTickets ?? [];
+        this.refreshAssignmentSelections();
       },
       error: () => this.router.navigate(['/login'])
     });
@@ -44,16 +45,20 @@ export class AdminDashboardComponent implements OnInit {
     this.ticketService.getAllUsers().subscribe({
       next: (users) => {
         this.supportUsers = users.filter((user) => user.role === 'IT_SUPPORT');
-        this.totalTickets.forEach((ticket) => {
-          if (ticket.assignedToUsername) {
-            const selectedUser = this.supportUsers.find((u) => u.username === ticket.assignedToUsername);
-            if (selectedUser) {
-              this.assignmentSelections[ticket.id] = selectedUser.id;
-            }
-          }
-        });
+        this.refreshAssignmentSelections();
       },
       error: () => this.supportUsers = []
+    });
+  }
+
+  refreshAssignmentSelections(): void {
+    this.totalTickets.forEach((ticket) => {
+      if (ticket.assignedToUsername) {
+        const selectedUser = this.supportUsers.find((u) => u.username === ticket.assignedToUsername);
+        if (selectedUser) {
+          this.assignmentSelections[ticket.id] = selectedUser.id;
+        }
+      }
     });
   }
 

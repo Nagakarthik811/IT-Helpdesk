@@ -36,6 +36,17 @@ export class EmployeeDashboardComponent implements OnInit {
     return (ticket?.priority ?? 'normal').toLowerCase();
   }
 
+  deleteTicket(ticket: any): void {
+    if (!ticket || ticket.status !== 'CLOSED') {
+      return;
+    }
+
+    this.ticketService.deleteTicket(ticket.id).subscribe({
+      next: () => this.ngOnInit(),
+      error: () => this.ngOnInit()
+    });
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

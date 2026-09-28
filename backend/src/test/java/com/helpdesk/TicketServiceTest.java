@@ -64,4 +64,28 @@ class TicketServiceTest {
         assertEquals(TicketStatus.OPEN, historyCaptor.getValue().getOldStatus());
         assertEquals(TicketStatus.ASSIGNED, historyCaptor.getValue().getNewStatus());
     }
+
+    @Test
+    void deleteTicket_shouldRemoveClosedTicketForAuthorizedUser() {
+        User employee = User.builder().id(1L).username("employee").role(Role.EMPLOYEE).build();
+        Ticket ticket = Ticket.builder()
+                .id(10L)
+                .ticketNumber("TKT-2026-00002")
+                .title("Old closed ticket")
+                .description("desc")
+                .category(TicketCategory.HARDWARE)
+                .priority(TicketPriority.MEDIUM)
+                .status(TicketStatus.CLOSED)
+                .createdBy(employee)
+                .build();
+
+        when(userRepository.findByUsername("employee")).thenReturn(Optional.of(employee));
+        when(ticketRepository.findById(10L)).thenReturn(Optional.of(ticket));
+
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("employee", "password"));
+
+        ticketService.deleteTicket(10L);
+
+        verify(ticketRepository).delete(ticket);
+    }
 }

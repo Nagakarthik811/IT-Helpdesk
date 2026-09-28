@@ -30,9 +30,9 @@ public class DashboardController {
     @PreAuthorize("hasRole('IT_SUPPORT')")
     public ResponseEntity<Map<String, Object>> supportDashboard() {
         return ResponseEntity.ok(Map.of(
-                "totalTickets", ticketService.getAllTickets(org.springframework.data.domain.Pageable.unpaged()).getContent(),
-                "recentTickets", ticketService.getRecentTickets(),
-                "highPriorityTickets", ticketService.getHighPriorityTickets(),
+                "totalTickets", ticketService.getVisibleTicketsForCurrentSupportUser(),
+                "recentTickets", ticketService.getRecentTicketsForCurrentSupportUser(),
+                "highPriorityTickets", ticketService.getVisibleHighPriorityTicketsForCurrentSupportUser(),
                 "unassignedTickets", ticketService.getUnassignedTickets(),
                 "myAssignedTickets", ticketService.getAssignedTicketsForCurrentUser()
         ));

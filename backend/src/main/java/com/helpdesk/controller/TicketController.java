@@ -64,6 +64,13 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.updateStatus(id, request));
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','IT_SUPPORT','ADMIN')")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+        ticketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{ticketId}/comments")
     @PreAuthorize("hasAnyRole('EMPLOYEE','IT_SUPPORT','ADMIN')")
     public ResponseEntity<TicketResponse> addComment(@PathVariable Long ticketId, @Valid @RequestBody CommentRequest request) {

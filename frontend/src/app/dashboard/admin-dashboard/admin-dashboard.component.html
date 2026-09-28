@@ -8,39 +8,51 @@
   </header>
 
   <section class="summary-grid">
-    <div class="summary-card">
+    <div class="summary-card card-blue">
       <span>Total tickets</span>
       <strong>{{ totalTickets.length }}</strong>
     </div>
-    <div class="summary-card">
+    <div class="summary-card card-amber">
       <span>Open issues</span>
       <strong>{{ openTicketsCount() }}</strong>
     </div>
-    <div class="summary-card">
-      <span>Recent activity</span>
-      <strong>{{ recentTickets.length }}</strong>
+    <div class="summary-card card-green">
+      <span>Support agents</span>
+      <strong>{{ supportUsers.length }}</strong>
     </div>
   </section>
 
   <section class="panel">
-    <h3>Latest tickets</h3>
+    <div class="panel-header">
+      <h3>Latest tickets</h3>
+      <div class="pill">Assignment board</div>
+    </div>
+
     <div class="ticket-list" *ngIf="recentTickets.length; else emptyState">
       <article class="ticket-item" *ngFor="let ticket of recentTicketPreview()">
         <div class="ticket-copy">
-          <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+          <div class="title-row">
+            <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+            <span class="status-chip">{{ ticket.status }}</span>
+          </div>
           <h4>{{ ticket.title }}</h4>
           <p>{{ ticket.description }}</p>
         </div>
+
         <div class="ticket-side">
           <div class="meta-row">
             <span>#{{ ticket.ticketNumber || ticket.id }}</span>
-            <span>{{ ticket.status }}</span>
+            <span>{{ ticket.assignedToUsername ? 'Assigned: ' + ticket.assignedToUsername : 'Unassigned' }}</span>
           </div>
+
           <div class="action-row compact">
-            <select [(ngModel)]="assignmentSelections[ticket.id]">
-              <option [ngValue]="undefined">Assign support</option>
-              <option *ngFor="let user of supportUsers" [ngValue]="user.id">{{ user.username }}</option>
-            </select>
+            <label class="assign-select">
+              <span>Assign to</span>
+              <select [(ngModel)]="assignmentSelections[ticket.id]">
+                <option [ngValue]="undefined">Select support agent</option>
+                <option *ngFor="let user of supportUsers" [ngValue]="user.id">{{ user.username }} ({{ user.department || 'IT Support' }})</option>
+              </select>
+            </label>
             <button type="button" class="primary" (click)="assignToSupport(ticket)">Assign</button>
             <button type="button" class="secondary" (click)="updateTicketStatus(ticket, 'IN_PROGRESS')">In progress</button>
             <button type="button" class="success" (click)="updateTicketStatus(ticket, 'RESOLVED')">Resolve</button>
@@ -49,6 +61,7 @@
         </div>
       </article>
     </div>
+
     <ng-template #emptyState>
       <div class="empty-state">No recent activity recorded.</div>
     </ng-template>

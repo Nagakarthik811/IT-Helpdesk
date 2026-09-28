@@ -2,45 +2,53 @@
   <header class="topbar">
     <div>
       <span class="eyebrow">Support desk</span>
-      <h2>Operations dashboard</h2>
+      <h2>Welcome, {{ supportName }}</h2>
     </div>
     <button type="button" (click)="logout()">Logout</button>
   </header>
 
   <section class="summary-grid">
-    <div class="summary-card">
-      <span>Total tickets</span>
+    <div class="summary-card card-blue">
+      <span>Visible queue</span>
       <strong>{{ totalTickets.length }}</strong>
     </div>
-    <div class="summary-card">
+    <div class="summary-card card-amber">
       <span>High priority</span>
       <strong>{{ highPriorityTickets.length }}</strong>
     </div>
-    <div class="summary-card">
-      <span>Unassigned</span>
+    <div class="summary-card card-cyan">
+      <span>Open / unassigned</span>
       <strong>{{ unassignedTickets.length }}</strong>
     </div>
-    <div class="summary-card">
+    <div class="summary-card card-green">
       <span>Assigned to me</span>
       <strong>{{ myAssignedTickets.length }}</strong>
     </div>
   </section>
 
   <section class="panel">
-    <h3>Queue overview</h3>
+    <div class="panel-header">
+      <h3>Open queue</h3>
+      <span class="pill">Visible to all support agents</span>
+    </div>
+
     <div class="ticket-list" *ngIf="totalTickets.length; else emptyState">
       <article class="ticket-item" *ngFor="let ticket of queuePreview()">
         <div class="ticket-copy">
-          <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+          <div class="title-row">
+            <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+            <span class="status-chip">{{ ticket.status }}</span>
+          </div>
           <h4>{{ ticket.title }}</h4>
           <p>{{ ticket.description }}</p>
         </div>
+
         <div class="ticket-side">
           <div class="meta-row">
             <span>#{{ ticket.ticketNumber || ticket.id }}</span>
-            <span>{{ ticket.status }}</span>
-            <span>{{ ticket.assignedToUsername || 'Unassigned' }}</span>
+            <span>{{ ticket.assignedToUsername ? 'Owner: ' + ticket.assignedToUsername : 'Unassigned' }}</span>
           </div>
+
           <div class="action-row">
             <button type="button" class="primary" (click)="takeTicket(ticket)">Take ticket</button>
             <button type="button" class="secondary" (click)="updateTicketStatus(ticket, 'IN_PROGRESS')">In progress</button>
@@ -50,6 +58,7 @@
         </div>
       </article>
     </div>
+
     <ng-template #emptyState>
       <div class="empty-state">No visible tickets in the queue.</div>
     </ng-template>

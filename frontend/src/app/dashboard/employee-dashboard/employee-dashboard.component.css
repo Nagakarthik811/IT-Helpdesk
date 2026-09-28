@@ -1,24 +1,26 @@
 .page-shell {
   padding: 2rem;
-  background: #f8fafc;
   min-height: 100vh;
+  background: linear-gradient(180deg, #020817 0%, #0f172a 26%, #111827 100%);
+  color: #e2e8f0;
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.5);
   padding: 1.25rem 1.5rem;
-  border-radius: 18px;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  border-radius: 22px;
   margin-bottom: 1.5rem;
 }
 
 .eyebrow {
   display: block;
-  color: #2563eb;
-  font-size: 0.73rem;
+  color: #7dd3fc;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-bottom: 0.25rem;
@@ -27,7 +29,7 @@
 .topbar h2 {
   margin: 0;
   font-size: 1.8rem;
-  color: #0f172a;
+  color: #f8fafc;
 }
 
 .nav-actions {
@@ -39,8 +41,8 @@
 .nav-actions a,
 .nav-actions button {
   border: none;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+  color: white;
   border-radius: 10px;
   padding: 0.7rem 1rem;
   text-decoration: none;
@@ -56,29 +58,31 @@
 }
 
 .summary-card {
-  background: white;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.88));
   border-radius: 18px;
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.12);
 }
 
 .summary-card span {
-  color: #64748b;
+  color: #cbd5e1;
 }
 
 .summary-card strong {
   font-size: 1.8rem;
-  color: #0f172a;
+  color: #f8fafc;
 }
 
 .panel {
-  background: white;
+  background: rgba(15, 23, 42, 0.8);
   border-radius: 18px;
   padding: 1.4rem;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.12);
 }
 
 .panel-header {
@@ -90,10 +94,11 @@
 
 .panel-header h3 {
   margin: 0;
+  color: #f8fafc;
 }
 
 .panel-header a {
-  color: #2563eb;
+  color: #7dd3fc;
   text-decoration: none;
   font-weight: 700;
 }
@@ -104,7 +109,8 @@
 }
 
 .ticket-item {
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.7);
   border-radius: 14px;
   padding: 1rem;
   display: flex;
@@ -112,36 +118,75 @@
   gap: 1rem;
 }
 
+.ticket-copy {
+  flex: 1;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
 .ticket-item h4 {
-  margin: 0.7rem 0 0;
-  color: #0f172a;
+  margin: 0;
+  color: #f8fafc;
 }
 
 .meta-row {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.5rem;
-  color: #475569;
+  gap: 0.55rem;
+  color: #cbd5e1;
   font-size: 0.85rem;
 }
 
-.badge {
-  display: inline-block;
-  padding: 0.3rem 0.6rem;
+.badge,
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
+  padding: 0.35rem 0.6rem;
 }
 
-.badge-low { background: #e0f2fe; color: #075985; }
-.badge-medium { background: #fef3c7; color: #92400e; }
-.badge-high { background: #fcd6d6; color: #b91c1c; }
-.badge-critical { background: #fecdd3; color: #9f1239; }
+.badge-low { background: rgba(125, 211, 252, 0.15); color: #bae6fd; }
+.badge-medium { background: rgba(251, 191, 36, 0.15); color: #fde68a; }
+.badge-high { background: rgba(248, 113, 113, 0.15); color: #fecaca; }
+.badge-critical { background: rgba(244, 63, 94, 0.15); color: #fda4af; }
+.status-chip { background: rgba(99, 102, 241, 0.12); color: #c7d2fe; }
+
+.danger-button {
+  border: none;
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
+  border-radius: 10px;
+  padding: 0.5rem 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
 
 .empty-state {
   padding: 1.4rem;
-  background: #f8fafc;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.1);
   border-radius: 12px;
-  color: #475569;
+  color: #cbd5e1;
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  .ticket-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .meta-row {
+    align-items: flex-start;
+    width: 100%;
+  }
 }

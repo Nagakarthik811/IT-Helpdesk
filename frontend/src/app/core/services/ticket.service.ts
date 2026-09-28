@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Ticket } from '../../tickets/ticket.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
-  private readonly apiUrl = 'http://localhost:8080/api';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -39,5 +40,9 @@ export class TicketService {
 
   getTicket(id: number): Observable<Ticket> {
     return this.http.get<Ticket>(`${this.apiUrl}/tickets/${id}`);
+  }
+
+  deleteTicket(ticketId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/tickets/${ticketId}`);
   }
 }

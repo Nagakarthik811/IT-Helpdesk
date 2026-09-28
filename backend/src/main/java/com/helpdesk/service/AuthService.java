@@ -49,6 +49,10 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("Email already exists");
         }
+        Role requestedRole = request.getRole() == null ? Role.EMPLOYEE : request.getRole();
+        if (requestedRole == Role.ADMIN) {
+            throw new BadRequestException("Public registration is only allowed for employees and support agents.");
+        }
 
         User user = User.builder()
                 .firstName(request.getFirstName())
@@ -58,7 +62,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .employeeId(request.getEmployeeId())
                 .department(request.getDepartment())
-                .role(request.getRole() == null ? Role.EMPLOYEE : request.getRole())
+                .role(requestedRole)
                 .active(true)
                 .build();
 

@@ -5,6 +5,17 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RegisterRequest {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  employeeId?: string;
+  department?: string;
+  role: Role;
+}
+
 export interface AuthResponse {
   token: string;
   username: string;

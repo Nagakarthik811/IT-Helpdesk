@@ -13,6 +13,7 @@ import { TicketService } from '../../core/services/ticket.service';
 })
 export class SupportDashboardComponent implements OnInit {
   user = this.authService.getCurrentUser();
+  supportName = this.user ? `${this.user.firstName} ${this.user.lastName}`.trim() || this.user.username : 'Support agent';
   totalTickets: any[] = [];
   recentTickets: any[] = [];
   highPriorityTickets: any[] = [];
@@ -39,6 +40,9 @@ export class SupportDashboardComponent implements OnInit {
         this.highPriorityTickets = data.highPriorityTickets ?? [];
         this.unassignedTickets = data.unassignedTickets ?? [];
         this.myAssignedTickets = data.myAssignedTickets ?? [];
+        this.supportName = this.authService.getCurrentUser()
+          ? `${this.authService.getCurrentUser()!.firstName} ${this.authService.getCurrentUser()!.lastName}`.trim() || this.authService.getCurrentUser()!.username
+          : 'Support agent';
       },
       error: () => this.router.navigate(['/login'])
     });

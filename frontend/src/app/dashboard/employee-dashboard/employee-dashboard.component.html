@@ -33,13 +33,17 @@
 
     <div class="ticket-list" *ngIf="tickets.length; else emptyState">
       <article class="ticket-item" *ngFor="let ticket of tickets">
-        <div>
-          <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+        <div class="ticket-copy">
+          <div class="title-row">
+            <span class="badge badge-{{ priorityClass(ticket) }}">{{ ticket.priority }}</span>
+            <span class="status-chip">{{ ticket.status }}</span>
+          </div>
           <h4>{{ ticket.title }}</h4>
         </div>
         <div class="meta-row">
           <span>#{{ ticket.ticketNumber || ticket.id }}</span>
           <span>{{ ticket.status }}</span>
+          <button *ngIf="ticket.status === 'CLOSED'" type="button" class="danger-button" (click)="deleteTicket(ticket)">Delete</button>
         </div>
       </article>
     </div>

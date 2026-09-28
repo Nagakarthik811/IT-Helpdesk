@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { AuthResponse, LoginRequest, Role, UserProfile } from '../../models/auth.model';
+import { AuthResponse, LoginRequest, RegisterRequest, Role, UserProfile } from '../../models/auth.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:8080/api';
+  private readonly apiUrl = environment.apiUrl;
   private currentUserSubject = new BehaviorSubject<UserProfile | null>(this.getStoredUser());
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -25,6 +26,10 @@ export class AuthService {
         this.currentUserSubject.next(user);
       })
     );
+  }
+
+  register(payload: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, payload);
   }
 
   logout(): void {
